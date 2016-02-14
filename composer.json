@@ -1,0 +1,36 @@
+{
+	"name": "mibadger/file",
+	"description": "The File Component",
+	"type": "library",
+	"keywords": [
+		"mibadger",
+		"badger",
+		"file"
+	],
+	"homepage": "https://www.mibadger.com",
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Michael Webbers",
+			"email": "michael@webbers.io",
+			"homepage": "http://webbers.io"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "5.*",
+		"mikey179/vfsStream": "1.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"miBadger\\File\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"miBadger\\File\\": "tests/"
+		}
+	}
+}
