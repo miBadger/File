@@ -253,17 +253,16 @@ class FileTest extends \PHPUnit_Framework_TestCase
 		$this->fake->read();
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @expectedException miBadger\File\FileException
+	 * @expectedExceptionMessage Can't read the content.
+	 */
 	public function testReadErrorReportingOff()
 	{
-		$level = error_reporting(0);
+		error_reporting(0);
 
-		try {
-			$this->directory->read();
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t read the content.', $e->getMessage());
-		}
-
-		error_reporting($level);
+		$this->directory->read();
 	}
 
 	/**
@@ -287,17 +286,16 @@ class FileTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $this->fake->read());
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @expectedException miBadger\File\FileException
+	 * @expectedExceptionMessage Can't append the given content.
+	 */
 	public function testAppendErrorReportingOff()
 	{
-		$level = error_reporting(0);
+		error_reporting(0);
 
-		try {
-			$this->directory->append('test');
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t append the given content.', $e->getMessage());
-		}
-
-		error_reporting($level);
+		$this->directory->append('test');
 	}
 
 	/**
@@ -321,16 +319,15 @@ class FileTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $this->fake->read());
 	}
 
+	/**
+	 * @runInSeparateProcess
+	 * @expectedException miBadger\File\FileException
+	 * @expectedExceptionMessage Can't write the given content.
+	 */
 	public function testWriteErrorReportingOff()
 	{
-		$level = error_reporting(0);
+		error_reporting(0);
 
-		try {
-			$this->directory->write('test');
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t write the given content.', $e->getMessage());
-		}
-
-		error_reporting($level);
+		$this->directory->write('test');
 	}
 }
