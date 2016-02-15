@@ -388,17 +388,13 @@ class File implements \Countable
 	 */
 	public function read()
 	{
-		try {
-			$result = file_get_contents($this->path);
+		$result = file_get_contents($this->path);
 
-			if ($result === false) {
-				throw new \Exception('Failed');
-			}
-
-			return $result;
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t read the content.', $e->getCode(), $e);
+		if ($result === false) {
+			throw new FileException('Can\'t read the content.');
 		}
+
+		return $result;
 	}
 
 	/**
@@ -410,12 +406,8 @@ class File implements \Countable
 	 */
 	public function append($content)
 	{
-		try {
-			if (file_put_contents($this->path, $content, \FILE_APPEND) === false) {
-				throw new \Exception('Failed');
-			}
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t append the given content.', $e->getCode(), $e);
+		if (file_put_contents($this->path, $content, \FILE_APPEND) === false) {
+			throw new FileException('Can\'t append the given content.');
 		}
 	}
 
@@ -428,12 +420,8 @@ class File implements \Countable
 	 */
 	public function write($content)
 	{
-		try {
-			if (file_put_contents($this->path, $content) === false) {
-				throw new \Exception('Failed');
-			}
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t write the given content.', $e->getCode(), $e);
+		if (file_put_contents($this->path, $content) === false) {
+			throw new FileException('Can\'t write the given content.');
 		}
 	}
 }

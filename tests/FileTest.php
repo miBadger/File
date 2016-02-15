@@ -236,7 +236,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testReadDirectory()
 	{
-		$this->directory->read();
+		@$this->directory->read();
 	}
 
 	public function testReadFile()
@@ -250,19 +250,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testReadFake()
 	{
-		$this->fake->read();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't read the content.
-	 */
-	public function testReadErrorReportingOff()
-	{
-		error_reporting(0);
-
-		$this->directory->read();
+		@$this->fake->read();
 	}
 
 	/**
@@ -271,7 +259,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAppendDirectory()
 	{
-		$this->directory->append('test');
+		@$this->directory->append('test');
 	}
 
 	public function testAppendFile()
@@ -287,24 +275,12 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @runInSeparateProcess
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't append the given content.
-	 */
-	public function testAppendErrorReportingOff()
-	{
-		error_reporting(0);
-
-		$this->directory->append('test');
-	}
-
-	/**
 	 * @expectedException miBadger\File\FileException
 	 * @expectedExceptionMessage Can't write the given content.
 	 */
 	public function testWriteDirectory()
 	{
-		$this->directory->write('test');
+		@$this->directory->write('test');
 	}
 
 	public function testWriteFile()
@@ -317,17 +293,5 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertNull($this->fake->write('test'));
 		$this->assertEquals('test', $this->fake->read());
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't write the given content.
-	 */
-	public function testWriteErrorReportingOff()
-	{
-		error_reporting(0);
-
-		$this->directory->write('test');
 	}
 }
