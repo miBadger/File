@@ -389,7 +389,9 @@ class File implements \Countable
 	public function read()
 	{
 		try {
-			if (($result = file_get_contents($this->path)) === false) {
+			$result = file_get_contents($this->path);
+
+			if ($result === false) {
 				throw new \Exception('Failed');
 			}
 
