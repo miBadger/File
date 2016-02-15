@@ -143,12 +143,10 @@ class File implements \Countable
 	 */
 	public function count()
 	{
-		// Check if the file exists
 		if (!$this->exists()) {
 			return -1;
 		}
 
-		// Return length
 		return ($result = filesize($this->path)) !== false ? $result : -1;
 	}
 
@@ -159,12 +157,10 @@ class File implements \Countable
 	 */
 	public function lastModified()
 	{
-		// Check if the file exists
 		if (!$this->exists()) {
 			return -1;
 		}
 
-		// Return last modified timestamp
 		return ($result = filemtime($this->path)) !== false ? $result : -1;
 	}
 
@@ -177,19 +173,16 @@ class File implements \Countable
 	 */
 	private function listAllIterator($recursive = false, $showHidden = false)
 	{
-		// Check file
 		if (!$this->isDirectory()) {
 			return new \ArrayIterator([]);
 		}
 
-		// Check flags
 		$flags = \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO;
 
 		if (!$showHidden) {
 			$flags = $flags | \FilesystemIterator::SKIP_DOTS;
 		}
 
-		// Check recursive
 		if ($recursive) {
 			return new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->path, $flags), \RecursiveIteratorIterator::SELF_FIRST);
 		}
@@ -206,15 +199,12 @@ class File implements \Countable
 	 */
 	public function listAll($recursive = false, $showHidden = false)
 	{
-		// Init
 		$result = [];
 
-		// List all
 		foreach ($this->listAllIterator($recursive, $showHidden) as $element) {
 			$result[] = $element->getFilename();
 		}
 
-		// Return all
 		return $result;
 	}
 
@@ -227,17 +217,14 @@ class File implements \Countable
 	 */
 	public function listDirectories($recursive = false, $showHidden = false)
 	{
-		// Init
 		$result = [];
 
-		// List directories
 		foreach ($this->listAllIterator($recursive, $showHidden) as $element) {
 			if ($element->isDir()) {
 				$result[] = $element->getFilename();
 			}
 		}
 
-		// Return directories
 		return $result;
 	}
 
@@ -250,17 +237,14 @@ class File implements \Countable
 	 */
 	public function listFiles($recursive = false, $showHidden = false)
 	{
-		// Init
 		$result = [];
 
-		// List files
 		foreach ($this->listAllIterator($recursive, $showHidden) as $element) {
 			if ($element->isFile()) {
 				$result[] = $element->getFilename();
 			}
 		}
 
-		// Return files
 		return $result;
 	}
 
@@ -272,7 +256,6 @@ class File implements \Countable
 	 */
 	public function makeFile($override = false)
 	{
-		// Check if the file exists
 		if ($this->exists() && !$override) {
 			return false;
 		}
@@ -289,17 +272,14 @@ class File implements \Countable
 	 */
 	public function makeDirectory($recursive = false, $permissions = 0775)
 	{
-		// Check if the directory exists
 		if ($this->exists()) {
 			return false;
 		}
 
-		// Make directory
 		$old = umask(0777 - $permissions);
 		$result = mkdir($this->path, $permissions, $recursive);
 		umask($old);
 
-		// Return result
 		return $result;
 	}
 
@@ -312,15 +292,12 @@ class File implements \Countable
 	 */
 	public function move($path, $override = false)
 	{
-		// Check if the old file exists
 		if (!$this->exists()) {
 			return false;
 		}
 
-		// Create file
 		$file = new File($path);
 
-		// Check if the new file exists
 		if (($file->exists() && !$override) || !rename($this->path, $file->getPath())) {
 			return false;
 		}
@@ -350,17 +327,14 @@ class File implements \Countable
 	 */
 	public function removeDirectory($recursive = false)
 	{
-		// Check if the directory has to be removed recursive
 		if (!$recursive) {
 			return rmdir($this->path);
 		}
 
-		// Loop trough the directory
 		foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->path, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $path) {
 			$path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
 		}
 
-		// Return true
 		return true;
 	}
 
@@ -371,12 +345,10 @@ class File implements \Countable
 	 */
 	public function removeFile()
 	{
-		// Check if the file exists
 		if (!$this->isFile()) {
 			return false;
 		}
 
-		// Remove file
 		return unlink($this->path);
 	}
 
@@ -388,15 +360,13 @@ class File implements \Countable
 	 */
 	public function read()
 	{
-		try {
-			if (($result = file_get_contents($this->path)) === false) {
-				throw new \Exception('Failed');
-			}
+		$result = file_get_contents($this->path);
 
-			return $result;
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t read the content.', $e->getCode(), $e);
+		if ($result === false) {
+			throw new FileException('Can\'t read the content.');
 		}
+
+		return $result;
 	}
 
 	/**
@@ -408,12 +378,8 @@ class File implements \Countable
 	 */
 	public function append($content)
 	{
-		try {
-			if (file_put_contents($this->path, $content, \FILE_APPEND) === false) {
-				throw new \Exception('Failed');
-			}
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t append the given content.', $e->getCode(), $e);
+		if (file_put_contents($this->path, $content, \FILE_APPEND) === false) {
+			throw new FileException('Can\'t append the given content.');
 		}
 	}
 
@@ -426,12 +392,8 @@ class File implements \Countable
 	 */
 	public function write($content)
 	{
-		try {
-			if (file_put_contents($this->path, $content) === false) {
-				throw new \Exception('Failed');
-			}
-		} catch (\Exception $e) {
-			throw new FileException('Can\'t write the given content.', $e->getCode(), $e);
+		if (file_put_contents($this->path, $content) === false) {
+			throw new FileException('Can\'t write the given content.');
 		}
 	}
 }

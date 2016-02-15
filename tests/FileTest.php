@@ -236,7 +236,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testReadDirectory()
 	{
-		$this->directory->read();
+		@$this->directory->read();
 	}
 
 	public function testReadFile()
@@ -250,20 +250,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testReadFake()
 	{
-		$this->fake->read();
-	}
-
-	public function testReadErrorReportingOff()
-	{
-		$level = error_reporting(0);
-
-		try {
-			$this->directory->read();
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t read the content.', $e->getMessage());
-		}
-
-		error_reporting($level);
+		@$this->fake->read();
 	}
 
 	/**
@@ -272,7 +259,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAppendDirectory()
 	{
-		$this->directory->append('test');
+		@$this->directory->append('test');
 	}
 
 	public function testAppendFile()
@@ -287,26 +274,13 @@ class FileTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $this->fake->read());
 	}
 
-	public function testAppendErrorReportingOff()
-	{
-		$level = error_reporting(0);
-
-		try {
-			$this->directory->append('test');
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t append the given content.', $e->getMessage());
-		}
-
-		error_reporting($level);
-	}
-
 	/**
 	 * @expectedException miBadger\File\FileException
 	 * @expectedExceptionMessage Can't write the given content.
 	 */
 	public function testWriteDirectory()
 	{
-		$this->directory->write('test');
+		@$this->directory->write('test');
 	}
 
 	public function testWriteFile()
@@ -319,18 +293,5 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertNull($this->fake->write('test'));
 		$this->assertEquals('test', $this->fake->read());
-	}
-
-	public function testWriteErrorReportingOff()
-	{
-		$level = error_reporting(0);
-
-		try {
-			$this->directory->write('test');
-		} catch(FileException $e) {
-			$this->assertEquals('Can\'t write the given content.', $e->getMessage());
-		}
-
-		error_reporting($level);
 	}
 }
