@@ -12,7 +12,7 @@ use miBadger\File\File;
 /**
  * Constructs a File object with the given path.
  */
-$file = new File('/directory/file');
+$file = new File($path);
 
 /**
  * Returns the path of the file.
