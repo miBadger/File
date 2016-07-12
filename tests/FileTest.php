@@ -137,6 +137,16 @@ class FileTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @depends testExists
 	 */
+	public function testLength()
+	{
+		$this->assertNotEquals(-1, $this->directory->length());
+		$this->assertNotEquals(-1, $this->file->length());
+		$this->assertEquals(-1, $this->fake->length());
+	}
+
+	/**
+	 * @depends testExists
+	 */
 	public function testLastModified()
 	{
 		$this->assertNotEquals(-1, $this->directory->lastModified());
