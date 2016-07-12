@@ -65,6 +65,11 @@ $file->isDirectory();
 $file->count();
 
 /**
+ * Returns the numer of bytes in the file, or -1 on failure.
+ */
+$file->length();
+
+/**
  * Returns the time of the last modification as a unixtimestap, or -1 on failure.
  */
 $file->lastModified();

@@ -143,6 +143,16 @@ class File implements \Countable
 	 */
 	public function count()
 	{
+		return $this->length();
+	}
+
+	/**
+	 * Returns the numer of bytes in the file, or -1 on failure.
+	 *
+	 * @return int the number of bytes in the file, or -1 on failure.
+	 */
+	public function length()
+	{
 		if (!$this->exists()) {
 			return -1;
 		}
