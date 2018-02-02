@@ -3,6 +3,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/miBadger/miBadger.File/badges/build.png?b=master)](https://scrutinizer-ci.com/g/miBadger/miBadger.File/build-status/master)
 [![Code Coverage](https://scrutinizer-ci.com/g/miBadger/miBadger.File/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/miBadger/miBadger.File/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/miBadger/miBadger.File/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/miBadger/miBadger.File/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/3bb457ee-5eaa-476e-a8b4-aec2f029d535/mini.png)](https://insight.sensiolabs.com/projects/3bb457ee-5eaa-476e-a8b4-aec2f029d535)
 
 The File Component.
 
