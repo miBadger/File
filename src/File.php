@@ -28,8 +28,8 @@ class File implements \Countable
 	 */
 	public function __construct($path)
 	{
-		if (substr($path, -1) === static::DIRECTORY_SEPARATOR) {
-			$this->path = substr($path, 0, -1);
+		if (mb_substr($path, -1) === static::DIRECTORY_SEPARATOR) {
+			$this->path = mb_substr($path, 0, -1);
 		} else {
 			$this->path = $path;
 		}
