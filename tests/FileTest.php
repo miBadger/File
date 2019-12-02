@@ -32,7 +32,7 @@ class FileTest extends TestCase
 	/** @var File The fake file. */
 	private $fake;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		vfsStreamWrapper::register();
 		vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
@@ -44,7 +44,7 @@ class FileTest extends TestCase
 		$this->fake = new File(vfsStream::url('test/fake.txt'));
 	}
 
-	public function tearDown()
+	public function tearDown(): void
 	{
 		vfsStreamWrapper::unregister();
 	}
@@ -253,12 +253,10 @@ class FileTest extends TestCase
 		$this->assertFalse($this->fake->removeFile());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't read the content.
-	 */
 	public function testReadDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't read the content");
 		@$this->directory->read();
 	}
 
@@ -267,21 +265,17 @@ class FileTest extends TestCase
 		$this->assertEquals('', $this->file->read());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't read the content.
-	 */
 	public function testReadFake()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't read the content");
 		@$this->fake->read();
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't append the given content.
-	 */
 	public function testAppendDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't append the given content.");
 		@$this->directory->append('test');
 	}
 
@@ -297,12 +291,10 @@ class FileTest extends TestCase
 		$this->assertEquals('test', $this->fake->read());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't write the given content.
-	 */
 	public function testWriteDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't write the given content.");
 		@$this->directory->write('test');
 	}
 
