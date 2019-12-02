@@ -104,7 +104,11 @@ class FileTest extends TestCase
 
 	public function testCanExecute()
 	{
-		$this->assertTrue($this->directory->canExecute());
+		if (version_compare(PHP_VERSION, '7.3.0') >= 0) {
+			// This was bugged in VFS < 7.3
+			// See: https://github.com/bovigo/vfsStream/wiki/Known-Issues
+			$this->assertTrue($this->directory->canExecute());
+		}
 		$this->assertFalse($this->file->canExecute());
 		$this->assertFalse($this->fake->canExecute());
 	}
