@@ -5,7 +5,6 @@
  *
  * @author Michael Webbers <michael@webbers.io>
  * @license http://opensource.org/licenses/Apache-2.0 Apache v2 License
- * @version 1.0.0
  */
 
 namespace miBadger\File;
@@ -29,8 +28,8 @@ class File implements \Countable
 	 */
 	public function __construct($path)
 	{
-		if (substr($path, -1) === static::DIRECTORY_SEPARATOR) {
-			$this->path = substr($path, 0, -1);
+		if (mb_substr($path, -1) === static::DIRECTORY_SEPARATOR) {
+			$this->path = mb_substr($path, 0, -1);
 		} else {
 			$this->path = $path;
 		}
@@ -74,6 +73,30 @@ class File implements \Countable
 	public function getName()
 	{
 		return basename($this->path);
+	}
+
+	/**
+	 * Returns the extension of the file
+	 * 
+	 * @return string the file extension
+	 */
+	public function getExtension()
+	{
+		return pathinfo($this->path, PATHINFO_EXTENSION);
+	}
+
+	/**
+	 * Returns the mime-type as determined by information from php's magic.mime file, null on failure
+	 * 
+	 * @return string|null the mime type
+	 */
+	public function getMimeType()
+	{
+		$mime = mime_content_type($this->path);
+		if ($mime === false) {
+			return null;
+		}
+		return $mime;
 	}
 
 	/**
@@ -142,6 +165,16 @@ class File implements \Countable
 	 * @return int the number of bytes in the file, or -1 on failure.
 	 */
 	public function count()
+	{
+		return $this->length();
+	}
+
+	/**
+	 * Returns the numer of bytes in the file, or -1 on failure.
+	 *
+	 * @return int the number of bytes in the file, or -1 on failure.
+	 */
+	public function size()
 	{
 		return $this->length();
 	}

@@ -5,7 +5,6 @@
  *
  * @author Michael Webbers <michael@webbers.io>
  * @license http://opensource.org/licenses/Apache-2.0 Apache v2 License
- * @version 1.0.0
  */
 
 namespace miBadger\File;
@@ -33,7 +32,7 @@ class FileTest extends TestCase
 	/** @var File The fake file. */
 	private $fake;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		vfsStreamWrapper::register();
 		vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
@@ -45,7 +44,7 @@ class FileTest extends TestCase
 		$this->fake = new File(vfsStream::url('test/fake.txt'));
 	}
 
-	public function tearDown()
+	public function tearDown(): void
 	{
 		vfsStreamWrapper::unregister();
 	}
@@ -84,6 +83,18 @@ class FileTest extends TestCase
 		$this->assertEquals('fake.txt', $this->fake->getName());
 	}
 
+	public function testExtension()
+	{
+		$this->assertEquals('txt', $this->file->getExtension());
+	}
+
+	public function testMimeType()
+	{
+		$this->assertEquals('inode/x-empty', $this->file->getMimeType());
+		$this->file->write("foo");
+		$this->assertEquals('text/plain', $this->file->getMimeType());
+	}
+
 	public function testExists()
 	{
 		$this->assertTrue($this->directory->exists());
@@ -93,7 +104,7 @@ class FileTest extends TestCase
 
 	public function testCanExecute()
 	{
-		$this->assertFalse($this->directory->canExecute());
+		$this->assertTrue($this->directory->canExecute());
 		$this->assertFalse($this->file->canExecute());
 		$this->assertFalse($this->fake->canExecute());
 	}
@@ -242,12 +253,10 @@ class FileTest extends TestCase
 		$this->assertFalse($this->fake->removeFile());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't read the content.
-	 */
 	public function testReadDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't read the content");
 		@$this->directory->read();
 	}
 
@@ -256,21 +265,17 @@ class FileTest extends TestCase
 		$this->assertEquals('', $this->file->read());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't read the content.
-	 */
 	public function testReadFake()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't read the content");
 		@$this->fake->read();
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't append the given content.
-	 */
 	public function testAppendDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't append the given content.");
 		@$this->directory->append('test');
 	}
 
@@ -286,12 +291,10 @@ class FileTest extends TestCase
 		$this->assertEquals('test', $this->fake->read());
 	}
 
-	/**
-	 * @expectedException miBadger\File\FileException
-	 * @expectedExceptionMessage Can't write the given content.
-	 */
 	public function testWriteDirectory()
 	{
+		$this->expectException(FileException::class);
+		$this->expectExceptionMessage("Can't write the given content.");
 		@$this->directory->write('test');
 	}
 
