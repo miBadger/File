@@ -83,6 +83,18 @@ class FileTest extends TestCase
 		$this->assertEquals('fake.txt', $this->fake->getName());
 	}
 
+	public function testExtension()
+	{
+		$this->assertEquals('txt', $this->file->getExtension());
+	}
+
+	public function testMimeType()
+	{
+		$this->assertEquals('inode/x-empty', $this->file->getMimeType());
+		$this->file->write("foo");
+		$this->assertEquals('text/plain', $this->file->getMimeType());
+	}
+
 	public function testExists()
 	{
 		$this->assertTrue($this->directory->exists());
@@ -92,7 +104,7 @@ class FileTest extends TestCase
 
 	public function testCanExecute()
 	{
-		$this->assertFalse($this->directory->canExecute());
+		$this->assertTrue($this->directory->canExecute());
 		$this->assertFalse($this->file->canExecute());
 		$this->assertFalse($this->fake->canExecute());
 	}

@@ -76,6 +76,30 @@ class File implements \Countable
 	}
 
 	/**
+	 * Returns the extension of the file
+	 * 
+	 * @return string the file extension
+	 */
+	public function getExtension()
+	{
+		return pathinfo($this->path, PATHINFO_EXTENSION);
+	}
+
+	/**
+	 * Returns the mime-type as determined by information from php's magic.mime file, null on failure
+	 * 
+	 * @return string|null the mime type
+	 */
+	public function getMimeType()
+	{
+		$mime = mime_content_type($this->path);
+		if ($mime === false) {
+			return null;
+		}
+		return $mime;
+	}
+
+	/**
 	 * Returns true if the file exists.
 	 *
 	 * @return bool true if the file exists.
@@ -141,6 +165,16 @@ class File implements \Countable
 	 * @return int the number of bytes in the file, or -1 on failure.
 	 */
 	public function count()
+	{
+		return $this->length();
+	}
+
+	/**
+	 * Returns the numer of bytes in the file, or -1 on failure.
+	 *
+	 * @return int the number of bytes in the file, or -1 on failure.
+	 */
+	public function size()
 	{
 		return $this->length();
 	}
