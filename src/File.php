@@ -19,7 +19,7 @@ class File implements \Countable
 	const DIRECTORY_SEPARATOR = \DIRECTORY_SEPARATOR;
 
 	/** @var string the file path. */
-	private $path;
+	protected $path;
 
 	/**
 	 * Constructs a File object with the given path.
@@ -214,7 +214,7 @@ class File implements \Countable
 	 * @param bool $showHidden = false
 	 * @return \ArrayIterator|\FilesystemIterator|\RecursiveIteratorIterator an iterator with the files and directories in the current directory.
 	 */
-	private function listAllIterator($recursive = false, $showHidden = false)
+	protected function listAllIterator($recursive = false, $showHidden = false)
 	{
 		if (!$this->isDirectory()) {
 			return new \ArrayIterator([]);
